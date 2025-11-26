@@ -48,3 +48,23 @@ int main(){
 
     return 0;
 }
+
+// Palindrome Check of a string
+bool checkPalindrome(int i, string &s){
+    int n = s.size();
+    if(i >= n/2) return true;
+    if(s[i] != s[n-i-1]) return false;
+    return checkPalindrome(i+1, s);
+}
+
+int main(){
+    string s;
+    cout << "Enter a string: ";
+    cin >> s;
+    if(checkPalindrome(0, s))
+        cout << "true";
+    else
+        cout << "false";
+
+    return 0;
+}
