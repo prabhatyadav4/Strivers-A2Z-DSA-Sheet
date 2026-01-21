@@ -27,10 +27,13 @@ The longest sequence of consecutive elements in the array is [0, 1, 2, 3, 4, 5, 
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <unordered_set>
+
 using namespace std;
 
 
-int longestConsecutive(vector<int>& nums) {
+// -------------------- BRUTE FORCE --------------------
+int longestConsecutiveBrute(vector<int>& nums) {
     int n = nums.size();
     int longest = 0;
 
@@ -42,7 +45,74 @@ int longestConsecutive(vector<int>& nums) {
             x = x + 1;
             cnt++;
         }
+
         longest = max(longest, cnt);
     }
+
     return longest;
+}
+
+// -------------------- BETTER (SORTING) --------------------
+int longestConsecutiveBetter(vector<int>& nums) {
+    if (nums.size() == 0) return 0;
+
+    sort(nums.begin(), nums.end());
+
+    int longest = 1;
+    int cnt = 1;
+
+    for (int i = 1; i < nums.size(); i++) {
+        if (nums[i] == nums[i - 1] + 1) {
+            cnt++;
+        }
+        else if (nums[i] != nums[i - 1]) {
+            cnt = 1;
+        }
+        longest = max(longest, cnt);
+    }
+
+    return longest;
+}
+
+// -------------------- OPTIMAL (HASH SET) --------------------
+int longestConsecutiveOptimal(vector<int>& nums) {
+    unordered_set<int> st(nums.begin(), nums.end());
+    int longest = 0;
+
+    for (auto x : st) {
+        if (st.find(x - 1) == st.end()) {
+            int cnt = 1;
+            int curr = x;
+
+            while (st.find(curr + 1) != st.end()) {
+                curr++;
+                cnt++;
+            }
+
+            longest = max(longest, cnt);
+        }
+    }
+
+    return longest;
+}
+
+
+int main() {
+    vector<int> nums = {100, 4, 200, 1, 3, 2};
+
+    // Make copies because sorting modifies array
+    vector<int> nums1 = nums;
+    vector<int> nums2 = nums;
+    vector<int> nums3 = nums;
+
+    cout << "Brute Force Answer   : " 
+         << longestConsecutiveBrute(nums1) << endl;
+
+    cout << "Better (Sorting) Answer : " 
+         << longestConsecutiveBetter(nums2) << endl;
+
+    cout << "Optimal (HashSet) Answer: " 
+         << longestConsecutiveOptimal(nums3) << endl;
+
+    return 0;
 }
