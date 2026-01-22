@@ -108,10 +108,10 @@ int main() {
     cout << "Brute Force Answer   : " 
          << longestConsecutiveBrute(nums1) << endl;
 
-    cout << "Better (Sorting) Answer : " 
+    cout << "Better Answer : " 
          << longestConsecutiveBetter(nums2) << endl;
 
-    cout << "Optimal (HashSet) Answer: " 
+    cout << "Optimal Answer: " 
          << longestConsecutiveOptimal(nums3) << endl;
 
     return 0;
