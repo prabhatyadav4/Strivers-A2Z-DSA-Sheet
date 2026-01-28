@@ -51,10 +51,21 @@ public:
             }
         }
 
-        // Reverse
+        // Reverse (for 90deg clockwise)
         for(int i = 0; i < n; i++){
             reverse(matrix[i].begin(), matrix[i].end());
         }
+
+        // // Reverse (for 90deg anti-clockwise)
+        // for(int j = 0; j < n; j++){
+        // int top = 0;
+        // int bottom = n-1;
+        // while(top < bottom){
+        //     swap(matrix[top][j], matrix[bottom][j]);
+        //     top++;
+        //     bottom--;
+        // }
+
     }
 
     void printMatrix(vector<vector<int>> &matrix, int m, int n){
