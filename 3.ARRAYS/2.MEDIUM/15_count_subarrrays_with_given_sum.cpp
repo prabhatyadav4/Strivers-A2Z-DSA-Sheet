@@ -22,6 +22,7 @@ Explanation: In the given array [1, 2, 3], there are two subarrays that sum up t
 
 #include <iostream>
 #include <vector>
+#include <map>
 using namespace std;
 
 class Solution{
@@ -59,6 +60,19 @@ public:
         }
         return count;
     }
+
+    int OptimalSubarraySum(vector<int> &nums, int k){
+        map<int,int> mpp;
+        mpp[0] = 1;
+        int preSum = 0, cnt = 0;
+        for(int i = 0; i < nums.size(); i++){
+            preSum += nums[i];
+            int remove = preSum - k;
+            cnt += mpp[remove];
+            mpp[preSum] += 1;
+        }
+        return cnt;
+    }
 };
 
 int main() {
@@ -72,6 +86,9 @@ int main() {
 
     int betterAns = obj.BruteSubarraySum(arr, k);
     cout << "\nNumber of subarrays that sum up to 3: " << betterAns;
+
+    int optimalAns = obj.OptimalSubarraySum(arr, k);
+    cout << "\nNumber of subarrays that sum up to 3: " << optimalAns;
 
     return 0;
 }
