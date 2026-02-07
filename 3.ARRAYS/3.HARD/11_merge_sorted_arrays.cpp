@@ -91,6 +91,27 @@ class Solution{
         sort(arr1, arr1 + n);
         sort(arr2, arr2 + m);
     }
+
+    vector<int> OptimalMerge(vector<int>& nums1, vector<int>& nums2, int m, int n) {
+        int idx = m + n - 1;
+        int i = m - 1;
+        int j = n - 1;
+
+        while(i >= 0 && j >= 0){
+            if(nums1[i] >= nums2[j]){
+                nums1[idx--] = nums1[i--];
+            }
+            else{
+                nums1[idx--] = nums2[j--];
+            }
+        }
+
+        while(j >= 0){
+            nums1[idx--] = nums2[j--];
+        }
+
+        return nums1;
+    }
 };
 int main() {
     Solution obj;
@@ -101,7 +122,7 @@ int main() {
 
     obj.BruteMerge(arr1, arr2, n, m);
 
-    cout << "After merging (Brute Solution):\n" << endl;
+    cout << "After merging (Brute Solution):" << endl;
     cout << "arr1[] = ";
     for (int i = 0; i < n; i++) cout << arr1[i] << " ";
     cout << endl;
@@ -123,6 +144,19 @@ int main() {
     cout << "arr2: ";
     for(int i = 0; i < m; i++) {
         cout << arr2[i] << " ";
+    }
+    cout << endl;
+
+    int x = 3, y = 2;
+
+    vector<int> nums1 = {3, 6, 9, 0, 0};
+    vector<int> nums2 = {4, 10};
+
+    vector<int> result = obj.OptimalMerge(nums1, nums2, x, y);
+
+    cout << "After merging (Optimal Solution):\n";
+    for (int x : result) {
+        cout << x << " ";
     }
     cout << endl;
 
