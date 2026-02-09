@@ -73,6 +73,29 @@ public:
 
         return {repeating, missing};
     }    
+
+    vector<int> OptimalFindMissingRepeatingNumbers(vector<int> nums){
+        int n = nums.size();
+
+        long long SN = (long long) n * (n+1) / 2;
+        long long S2N = (long long) n * (n+1) * (2*n+1) / 6;
+        long long S1 = 0, S2 = 0;
+
+        for (int i = 0; i < n; i++){
+            S1 += nums[i];
+            S2 += (long long)nums[i] * (long long)nums[i];
+        }
+
+        long long val1 = S1 - SN;
+        long long val2 = S2 - S2N;
+
+        val2 = val2 / val1;
+
+        long long  repeating = (val1 + val2) / 2;
+        long long missing = repeating - val1;
+
+        return {(int)repeating, (int)missing};
+    }
 };
 
 int main() {
@@ -84,7 +107,10 @@ int main() {
     cout << "The Repeating and Missing numbers (Brute) are: " << "[" << result1[0] << ", " << result1[1] << "]";
 
     vector<int> result2 = obj.BetterFindMissingRepeatingNumbers(arr);
-    cout << "\nThe Repeating and Missing numbers (Better) are: " << "[" << result1[0] << ", " << result1[1] << "]";
+    cout << "\nThe Repeating and Missing numbers (Better) are: " << "[" << result2[0] << ", " << result2[1] << "]";
+
+    vector<int> result3 = obj.OptimalFindMissingRepeatingNumbers(arr);
+    cout << "\nThe Repeating and Missing numbers (Optimal) are: " << "[" << result3[0] << ", " << result3[1] << "]";
 
     return 0;
 }
