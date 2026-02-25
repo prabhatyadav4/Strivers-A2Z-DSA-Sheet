@@ -49,6 +49,18 @@ class Solution {
 
         return subarrays;
     }
+
+     int BruteSplitArray(vector<int> &a, int k) {
+        int low = *max_element(a.begin(), a.end());
+        int high = accumulate(a.begin(), a.end(), 0);
+
+        for (int maxSum = low; maxSum <= high; maxSum++) {
+            if (countSubarrays(a, maxSum) == k)
+                return maxSum;
+        }
+        return low; 
+    }
+
     int OptimalSplitArray(vector<int>& nums, int k) {
         int low = *max_element(nums.begin(), nums.end());
         int high = accumulate(nums.begin(), nums.end(), 0LL);
@@ -75,8 +87,10 @@ int main() {
     vector<int> arr = {7, 2, 5, 10, 8};
     int k = 2;
 
-    int result = obj.OptimalSplitArray(arr, k);
-    cout << "The minimized largest sum of the split is: " << result << endl;
+    int result1 = obj.BruteSplitArray(arr, k);
+    cout << "The minimized largest sum of the split (Brute) is: " << result1 << endl;
+    int result2 = obj.OptimalSplitArray(arr, k);
+    cout << "The minimized largest sum of the split (Optimal) is: " << result2 << endl;
 
     return 0;
 }
