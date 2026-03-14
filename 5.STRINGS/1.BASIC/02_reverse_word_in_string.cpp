@@ -75,8 +75,10 @@ public:
             }
 
             reverse(word.begin(), word.end());
-            if(word.length() > 0){
-                ans += " " + word;
+            
+            if(!word.empty()) {
+                if(!ans.empty())     ans += " ";
+                ans += word;
             }
         }
 
