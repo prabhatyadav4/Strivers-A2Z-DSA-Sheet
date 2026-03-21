@@ -41,16 +41,18 @@ Constraints:
 using namespace std;
 
 class Solution {
-    public: 
+public:
 
-    string countAndSay(int n) {
-        if(n == 1)  return "1";
+    // =============================================
+    // APPROACH 1: Recursion (Brute)
+    // Time: O(N×M)  Space: O(N×M)
+    // =============================================
+    string countAndSayBrute(int n) {
+        if(n == 1) return "1";
 
-        string say = countAndSay(n - 1);
-        
-        // Processing
+        string say = countAndSayBrute(n - 1);
+
         string result = "";
-
         for(int i = 0; i < say.length(); i++){
             int count = 1;
             char ch = say[i];
@@ -59,11 +61,62 @@ class Solution {
                 count++;
                 i++;
             }
-
             result += to_string(count) + string(1, ch);
         }
-
         return result;
+    }
+
+    // =============================================
+    // APPROACH 2: Iteration (Better)
+    // Time: O(N×M)  Space: O(M)
+    // =============================================
+    string countAndSayBetter(int n) {
+        string result = "1";
+
+        for(int i = 1; i < n; i++){
+            string temp = "";
+            int len = result.length();
+
+            for(int j = 0; j < len; j++){
+                int count = 1;
+                char ch = result[j];
+
+                while(j < len - 1 && result[j] == result[j + 1]){
+                    count++;
+                    j++;
+                }
+                temp += to_string(count) + string(1, ch);
+            }
+            result = temp;
+        }
+        return result;
+    }
+
+    // =============================================
+    // APPROACH 3: Two String Swap (Optimal)
+    // Time: O(N×M)  Space: O(M)
+    // =============================================
+    string countAndSayOptimal(int n) {
+        string curr = "1";
+        string next = "";
+
+        for(int i = 1; i < n; i++){
+            next = "";
+            int len = curr.length();
+
+            for(int j = 0; j < len; j++){
+                int count = 1;
+                char ch = curr[j];
+
+                while(j < len - 1 && curr[j] == curr[j + 1]){
+                    count++;
+                    j++;
+                }
+                next += to_string(count) + string(1, ch);
+            }
+            curr = next;  // swap to next term
+        }
+        return curr;
     }
 };
 
@@ -74,7 +127,9 @@ int main() {
     cout << "Enter the count: ";
     cin >> n;
 
-    cout << "The n-th element of the count-and-say sequence is: " << obj.countAndSay(n) << endl;
+    cout << "\nBRUTE   (Recursion):       " << obj.countAndSayBrute(n)   << endl;
+    cout << "BETTER  (Iteration):       " << obj.countAndSayBetter(n)  << endl;
+    cout << "OPTIMAL (Two String Swap): " << obj.countAndSayOptimal(n) << endl;
 
     return 0;
 }
