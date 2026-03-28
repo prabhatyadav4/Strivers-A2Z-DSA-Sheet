@@ -45,53 +45,57 @@ It can be shown that there is no possible way to add 1 gas station in such a way
 #include <bits/stdc++.h>
 using namespace std;
 
-// Class to solve the gas station placement problem
-class GasStationSolver {
+class Solution {
 public:
-    // Function to minimize the maximum distance after placing k gas stations
-    long double minimiseMaxDistance(vector<int>& arr, int k) {
+
+    int numOfStationReq(long double dist, vector<int> &arr) {
         int n = arr.size();
-        vector<int> howMany(n - 1, 0); // howMany[i]: extra stations between arr[i] and arr[i+1]
+        int count = 0;
 
-        // Place k gas stations one at a time
-        for (int gasStations = 1; gasStations <= k; gasStations++) {
-            long double maxSection = -1;
-            int maxInd = -1;
+        for(int i = 1; i < n; i++) {
+            int numInBetween = (arr[i] - arr[i-1]) / dist;
 
-            // Find the segment with the current largest section length
-            for (int i = 0; i < n - 1; i++) {
-                long double diff = arr[i + 1] - arr[i];
-                long double sectionLength = diff / (howMany[i] + 1.0);
-
-                if (sectionLength > maxSection) {
-                    maxSection = sectionLength;
-                    maxInd = i;
-                }
+            if(numInBetween * dist == arr[i] - arr[i-1]) {
+                numInBetween--;
             }
-
-            // Add a gas station in the largest segment
-            howMany[maxInd]++;
+            
+            count += numInBetween;
         }
 
-        // Find the final maximum distance after placing all gas stations
-        long double maxAns = -1;
-        for (int i = 0; i < n - 1; i++) {
-            long double diff = arr[i + 1] - arr[i];
-            long double sectionLength = diff / (howMany[i] + 1.0);
-            maxAns = max(maxAns, sectionLength);
+        return count;
+    }
+
+    long double minimiseMaxDistance(vector<int> &arr, int k) {
+        int n = arr.size();
+        long double low = 0, high = 0;
+
+        for(int i = 0; i < n -1; i++) {
+            high = max(high, (long double)(arr[i+1] - arr[i]));
         }
 
-        return maxAns;
+        long double diff = 1e-6;
+
+        while(high - low > diff) {
+            long double mid = (low + high) / 2.0;
+
+            int cnt = numOfStationReq(mid, arr);
+
+            if(cnt > k) low = mid;
+            else    high = mid;
+        }
+
+        return high;
     }
 };
 
 int main() {
+    Solution obj;
     vector<int> arr = {1, 2, 3, 4, 5};
     int k = 4;
 
-    GasStationSolver solver;
-    long double ans = solver.minimiseMaxDistance(arr, k);
+    long double ans = obj.minimiseMaxDistance(arr, k);
 
-    cout << "The answer is: " << ans << "\n";
+    cout << "Find the minimum value of distance is: " << ans << "\n";
+    
     return 0;
 }
