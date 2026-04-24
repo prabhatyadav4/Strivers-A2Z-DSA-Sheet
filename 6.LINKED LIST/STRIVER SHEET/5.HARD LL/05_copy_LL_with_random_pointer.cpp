@@ -39,9 +39,11 @@ Node.random is null or is pointing to some node in the linked list.
 */
 
 #include <iostream>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-// Node class definition for the linked list with random pointer
+// Node class definition for the linked list with a random pointer.
 class Node
 {
 public:
@@ -49,7 +51,7 @@ public:
     Node *next;    // Pointer to the next node in the list
     Node *random;  // Random pointer that can point to any node or null
 
-    // Constructor to initialize a node with given value
+    // Constructor to initialize a node with a value.
     Node(int x)
     {
         this->data = x;
@@ -58,33 +60,33 @@ public:
     }
 };
 
-// Helper function to find the corresponding node in the copied list
-// Traverses both original and copied lists to find the node that matches the random pointer
+// Helper function to find the corresponding node in the copied list.
+// Traverses both original and copied lists in parallel until the original node
+// matches the target random pointer node.
 Node *find(Node *curr1, Node *curr2, Node *x)
 {
     if (x == nullptr)
         return nullptr;  // If random is null, return null
 
-    // Traverse until we find the matching node in original list
     while (curr1 != x)
     {
         curr1 = curr1->next;
         curr2 = curr2->next;
     }
 
-    return curr2;  // Return the corresponding node in copied list
+    return curr2;  // Return the corresponding copied node
 }
 
-// Brute force approach to copy the linked list with random pointers
-// Time complexity: O(n^2) due to the find function being called for each node
+// Brute-force approach to copy the linked list with random pointers.
+// Time complexity: O(n^2) because `find` is called for each node.
 Node *BruteCopyRandomList(Node *head)
 {
-    // Step 1: Create a dummy head for the copied list
+    // Step 1: Create a dummy head for the copied list.
     Node *headCopy = new Node(-1);
     Node *tailCopy = headCopy;
     Node *temp = head;
 
-    // Traverse original list and create new nodes for the copy (only next pointers)
+    // Traverse the original list and create new nodes for the copy (only next pointers).
     while (temp)
     {
         tailCopy->next = new Node(temp->data);
@@ -92,15 +94,14 @@ Node *BruteCopyRandomList(Node *head)
         temp = temp->next;
     }
 
-    // Remove the dummy head and set headCopy to the actual first node
+    // Remove the dummy head and set headCopy to the actual first copied node.
     tailCopy = headCopy;
     headCopy = headCopy->next;
     delete tailCopy;
 
-    // Step 2: Set up random pointers using the find helper
+    // Step 2: Set up random pointers using the helper function.
     tailCopy = headCopy;
     temp = head;
-
     while (temp)
     {
         tailCopy->random = find(head, headCopy, temp->random);
@@ -108,18 +109,123 @@ Node *BruteCopyRandomList(Node *head)
         temp = temp->next;
     }
 
-    return headCopy;  // Return the head of the copied list
+    return headCopy;  // Return the head of the copied list.
 }
 
-#include <vector>
-
-// Function to print the linked list with random pointers in the required format
-void printList(Node *head)
+// Better approach using an unordered_map to directly map original nodes to copied nodes.
+Node *BetterCopyRandomList(Node *head)
 {
-    vector<Node *> nodes;  // Vector to store nodes for index lookup
+    // Step 1: Create the copied nodes list with next pointers only.
+    Node *headCopy = new Node(-1);
+    Node *tailCopy = headCopy;
     Node *temp = head;
 
-    // Store all nodes in the vector
+    while (temp)
+    {
+        tailCopy->next = new Node(temp->data);
+        tailCopy = tailCopy->next;
+        temp = temp->next;
+    }
+
+    tailCopy = headCopy;
+    headCopy = headCopy->next;
+    delete tailCopy;
+
+    // Step 2: Build a mapping from original nodes to copied nodes.
+    tailCopy = headCopy;
+    temp = head;
+    unordered_map<Node *, Node *> mp;
+    while (temp)
+    {
+        mp[temp] = tailCopy;
+        temp = temp->next;
+        tailCopy = tailCopy->next;
+    }
+
+    // Step 3: Assign random pointers using the mapping.
+    tailCopy = headCopy;
+    temp = head;
+    while (temp)
+    {
+        tailCopy->random = mp[temp->random];
+        tailCopy = tailCopy->next;
+        temp = temp->next;
+    }
+
+    return headCopy;  // Return the head of the copied list.
+}
+
+// Step 1 of the optimal approach: insert copied nodes immediately after original nodes.
+void insertCopyInBetween(Node *head)
+{
+    Node *temp = head;
+    while (temp != nullptr)
+    {
+        Node *nextElement = temp->next;
+        Node *copy = new Node(temp->data);
+        copy->next = nextElement;
+        temp->next = copy;
+        temp = nextElement;
+    }
+}
+
+// Step 2 of the optimal approach: connect the random pointers of the copied nodes.
+void connectRandomPointers(Node *head)
+{
+    Node *temp = head;
+    while (temp != nullptr)
+    {
+        Node *copyNode = temp->next;
+        if (temp->random)
+        {
+            copyNode->random = temp->random->next;
+        }
+        else
+        {
+            copyNode->random = nullptr;
+        }
+        temp = temp->next->next;
+    }
+}
+
+// Step 3 of the optimal approach: separate the copied list from the original list.
+Node *getDeepCopyList(Node *head)
+{
+    Node *temp = head;
+    Node *dummyNode = new Node(-1);
+    Node *res = dummyNode;
+
+    while (temp != nullptr)
+    {
+        res->next = temp->next;         // Link copied node to the new list
+        res = res->next;
+        temp->next = temp->next->next;  // Restore original list
+        temp = temp->next;
+    }
+
+    Node *newHead = dummyNode->next;
+    delete dummyNode;
+    return newHead;
+}
+
+// Optimal approach: interleave copied nodes, set randoms, then split lists.
+Node *OptimalCopyRandomList(Node *head)
+{
+    if (head == nullptr)
+        return nullptr;
+
+    insertCopyInBetween(head);
+    connectRandomPointers(head);
+    return getDeepCopyList(head);
+}
+
+// Function to print the linked list with random pointers in the required format.
+void printList(Node *head)
+{
+    vector<Node *> nodes;
+    Node *temp = head;
+
+    // Store nodes for index lookup when printing random pointer indices.
     while (temp)
     {
         nodes.push_back(temp);
@@ -127,19 +233,16 @@ void printList(Node *head)
     }
 
     temp = head;
-    // Print each node's value and random index
     while (temp)
     {
         cout << temp->data << " (";
-
         if (temp->random == nullptr)
         {
             cout << "null";
         }
         else
         {
-            // Find the index of the random pointer node
-            for (int i = 0; i < nodes.size(); i++)
+            for (int i = 0; i < (int)nodes.size(); i++)
             {
                 if (nodes[i] == temp->random)
                 {
@@ -148,7 +251,6 @@ void printList(Node *head)
                 }
             }
         }
-
         cout << ") -> ";
         temp = temp->next;
     }
@@ -158,21 +260,19 @@ void printList(Node *head)
 int main()
 {
     // Creating the example linked list: [[7,null],[13,0],[11,4],[10,2],[1,0]]
-
-    // Create nodes
     Node *n1 = new Node(7);
     Node *n2 = new Node(13);
     Node *n3 = new Node(11);
     Node *n4 = new Node(10);
     Node *n5 = new Node(1);
 
-    // Link next pointers
+    // Link next pointers.
     n1->next = n2;
     n2->next = n3;
     n3->next = n4;
     n4->next = n5;
 
-    // Link random pointers
+    // Link random pointers.
     n1->random = nullptr;
     n2->random = n1;  // Points to index 0
     n3->random = n5;  // Points to index 4
@@ -182,11 +282,18 @@ int main()
     cout << "Original List:\n";
     printList(n1);
 
-    // Copy the list
-    Node *copiedHead = BruteCopyRandomList(n1);
+    // Copy the list using different approaches.
+    Node *copiedHead1 = BruteCopyRandomList(n1);
+    cout << "\nBRUTE: Copied List:\n";
+    printList(copiedHead1);
 
-    cout << "\nCopied List:\n";
-    printList(copiedHead);
+    Node *copiedHead2 = BetterCopyRandomList(n1);
+    cout << "\nBETTER: Copied List:\n";
+    printList(copiedHead2);
+
+    Node *copiedHead3 = OptimalCopyRandomList(n1);
+    cout << "\nOPTIMAL: Copied List:\n";
+    printList(copiedHead3);
 
     return 0;
 }
