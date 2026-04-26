@@ -36,8 +36,10 @@ The sum of lists[i].length will not exceed 104.
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <queue>
 using namespace std;
 
+// Node structure for singly linked list
 class Node
 {
 public:
@@ -52,6 +54,7 @@ public:
 };
 
 // Convert an array of integers into a singly linked list
+// Time: O(n), Space: O(n)
 Node *convertArrToLL(vector<int> &arr)
 {
     Node *dummyNode = new Node(-1); // dummy head to simplify insertion
@@ -68,7 +71,8 @@ Node *convertArrToLL(vector<int> &arr)
     return newHead;
 }
 
-// Brute-force merge k sorted linked lists by collecting all values and sorting them
+// BRUTE FORCE: Extract all values, sort them, and rebuild the list
+// Time: O(N*logN) where N is total number of nodes, Space: O(N)
 Node *BruteMergeKLists(vector<Node *> &listArray)
 {
     vector<int> arr;
@@ -89,6 +93,101 @@ Node *BruteMergeKLists(vector<Node *> &listArray)
 
     // Convert sorted values back into a new linked list
     return convertArrToLL(arr);
+}
+
+// Merge two sorted linked lists into one
+// Time: O(m+n), Space: O(1)
+Node *mergeTwoSortedLL(Node *list1, Node *list2)
+{
+    Node *dummy = new Node(-1);
+    Node *temp = dummy;
+
+    // Compare nodes from both lists and attach the smaller one
+    while (list1 && list2)
+    {
+        if (list1->data < list2->data)
+        {
+            temp->next = list1;
+            list1 = list1->next;
+        }
+        else
+        {
+            temp->next = list2;
+            list2 = list2->next;
+        }
+
+        temp = temp->next;
+    }
+
+    // Attach remaining nodes from either list
+    if (list1)
+        temp->next = list1;
+    else
+        temp->next = list2;
+
+    Node *newHead = dummy->next;
+    delete dummy;
+    return newHead;
+}
+
+// BETTER APPROACH: Sequentially merge lists one by one
+// Time: O(N*k) where N is total nodes and k is number of lists, Space: O(1)
+Node *BetterMergeKLists(vector<Node *> &listArray)
+{
+    if(listArray.size() == 0) return nullptr;
+    Node *head = listArray[0];
+
+    // Merge each list with the previous result
+    for (int i = 1; i < listArray.size(); i++)
+    {
+        head = mergeTwoSortedLL(head, listArray[i]);
+    }
+
+    return head;
+}
+
+// OPTIMAL APPROACH: Use min-heap (priority queue) to efficiently get smallest element
+// Time: O(N*logk) where N is total nodes and k is number of lists, Space: O(k)
+Node *OptimalMergeKLists(vector<Node *> &listArray)
+{
+    // Min-heap storing (node value, node pointer) pairs
+    priority_queue<pair<int, Node *>,
+                   vector<pair<int, Node *>>, greater<pair<int, Node *>>>
+        pq;
+
+    // Initialize heap with first node from each list
+    for (int i = 0; i < listArray.size(); i++)
+    {
+        if (listArray[i] != nullptr)
+        {
+            pq.push({listArray[i]->data, listArray[i]});
+        }
+    }
+
+    Node *dummy = new Node(-1);
+    Node *tail = dummy;
+
+    // Extract min element, append to result, and insert next element from same list
+    while (!pq.empty())
+    {
+        auto it = pq.top();
+        pq.pop();
+        
+        tail->next = it.second;
+        tail = tail->next;
+
+        // Add next node from the same list if it exists
+        if (it.second->next)
+        {
+            pq.push({it.second->next->data, it.second->next});
+        }
+
+        tail->next = nullptr;
+    }
+
+    Node *newHead = dummy->next;
+    delete dummy;
+    return newHead;
 }
 
 // Print the linked list contents
@@ -125,11 +224,17 @@ int main()
     printList(list3);
 
     // Merge all lists into one sorted list
-    Node *mergedHead = BruteMergeKLists(listArray);
+    Node *mergedHead1 = BruteMergeKLists(listArray);
+    cout << "\nBRUTE: Merged List:\n";
+    printList(mergedHead1);
 
-    cout << "\nMerged List:\n";
-    printList(mergedHead);
-    cout << endl;
+    Node *mergedHead2 = BetterMergeKLists(listArray);
+    cout << "\nBETTER: Merged List:\n";
+    printList(mergedHead2);
+
+    Node *mergedHead3 = OptimalMergeKLists(listArray);
+    cout << "\nOPTIMAL: Merged List:\n";
+    printList(mergedHead3);
 
     return 0;
 }
