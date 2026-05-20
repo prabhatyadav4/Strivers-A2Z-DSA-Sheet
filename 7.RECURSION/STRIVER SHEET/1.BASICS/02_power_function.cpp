@@ -71,6 +71,25 @@ double OptimalPow(double x, int n)
     return solve(x, (long)n);
 }
 
+double helper(double x, long n)
+{
+    if (n == 1)
+        return 1;
+    if (n < 0)
+        return helper(1 / x, -n);
+
+    double half = helper(x, n / 2);
+    double result = half * half;
+    if (n % 2 == 1)
+        result = (result * x);
+    return result;
+}
+
+double binaryExponentiation(double x, int n)
+{
+    return helper(x, (long)n);
+}
+
 int main()
 {
     double x = 2.0;
@@ -81,6 +100,9 @@ int main()
 
     double result2 = OptimalPow(x, n);
     cout << "OPTIMAL: " << x << "^" << n << " = " << result2 << endl;
+
+    double result3 = binaryExponentiation(x, n);
+    cout << "Binary Exponentiation: " << x << "^" << n << " = " << result2 << endl;
 
     return 0;
 }
