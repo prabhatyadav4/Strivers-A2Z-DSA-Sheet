@@ -51,8 +51,8 @@ vector<string> binaryString(int n) {
 int main() {
     int n = 3;
 
+    cout << "All strings are of length 3 and do not contain consecutive 1s are: ";
     vector<string> ans = binaryString(n);
-
     for(auto it: ans) {
         cout << it << " ";
     }
