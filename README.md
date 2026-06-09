@@ -151,13 +151,13 @@ Each solution file contains:
 
 | Step | Topic | Problems Solved | Status |
 |------|-------|----------------|--------|
-| 1 | Basics | 0/X | 🔄 In Progress |
-| 2 | Sorting | 0/X | ⏳ Not Started |
-| 3 | Arrays | 0/X | ⏳ Not Started |
-| 4 | Binary Search | 0/X | ⏳ Not Started |
-| 5 | Strings | 0/X | ⏳ Not Started |
-| 6 | Linked Lists | 0/X | ⏳ Not Started |
-| 7 | Recursion | 0/X | ⏳ Not Started |
+| 1 | Basics | 0/X | ✅ Done |
+| 2 | Sorting | 0/X | ✅ Done |
+| 3 | Arrays | 0/X | ✅ Done |
+| 4 | Binary Search | 0/X | ✅ Done |
+| 5 | Strings | 0/X | ✅ Done |
+| 6 | Linked Lists | 0/X | ✅ Done |
+| 7 | Recursion | 0/X | ✅ Done |
 | 8 | Bit Manipulation | 0/X | ⏳ Not Started |
 | 9 | Stack & Queues | 0/X | ⏳ Not Started |
 | 10 | Sliding Window | 0/X | ⏳ Not Started |
