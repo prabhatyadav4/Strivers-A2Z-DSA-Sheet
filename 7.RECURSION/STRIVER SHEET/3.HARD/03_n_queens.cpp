@@ -24,6 +24,7 @@ Constraints:
 
 #include <iostream>
 #include <vector>
+#include <unordered_set>
 using namespace std;
 
 bool isValid(vector<string> &board, int row, int col)
@@ -77,7 +78,7 @@ void solve(int n, vector<string> &board, int row, vector<vector<string>> &result
     }
 }
 
-vector<vector<string>> solveNQueens(int n)
+vector<vector<string>> BruteSolveNQueens(int n)
 {
     vector<vector<string>> result;
     vector<string> board(n, string(n, '.')); //
@@ -88,12 +89,75 @@ vector<vector<string>> solveNQueens(int n)
     return result;
 }
 
+unordered_set<int> cols;
+unordered_set<int> diag;
+unordered_set<int> antiDiag;
+
+void helper(int n, vector<string> &board, int row, vector<vector<string>> &result)
+{
+    if (row == n)
+    {
+        result.push_back(board);
+        return;
+    }
+
+    for (int col = 0; col < n; col++)
+    {
+        int diagConst = row + col;
+        int antiDiagConst = row - col;
+
+        if (cols.find(col) != cols.end() || diag.find(diagConst) != diag.end() || antiDiag.find(antiDiagConst) != antiDiag.end())
+        {
+            continue;
+        }
+
+        cols.insert(col);
+        diag.insert(diagConst);
+        antiDiag.insert(antiDiagConst);
+        board[row][col] = 'Q';
+
+        helper(n, board, row + 1, result);
+
+        cols.erase(col);
+        diag.erase(diagConst);
+        antiDiag.erase(antiDiagConst);
+        board[row][col] = '.';
+    }
+}
+
+vector<vector<string>> OptimalSolveNQueens(int n)
+{
+    vector<vector<string>> result;
+    vector<string> board(n, string(n, '.'));
+    int row = 0;
+
+    helper(n, board, row, result);
+
+    return result;
+}
+
 int main()
 {
     int n = 4;
-    vector<vector<string>> res = solveNQueens(n);
+    vector<vector<string>> res = BruteSolveNQueens(n);
+
+    cout << "Brute Solution: " << endl;
 
     for (auto &board : res)
+    {
+        for (auto &row : board)
+        {
+            cout << row << "\n";
+        }
+        cout << "\n";
+    }
+
+    int m = 6;
+    vector<vector<string>> ans = OptimalSolveNQueens(m);
+
+    cout << "Optimal Solution: " << endl;
+
+    for (auto &board : ans)
     {
         for (auto &row : board)
         {
