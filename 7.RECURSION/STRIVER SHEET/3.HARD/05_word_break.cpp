@@ -10,6 +10,7 @@ using namespace std;
 
 int n;
 int dp[301];
+int maxLen;
 unordered_set<string> st;
 
 bool solve(int index, string &word)
@@ -24,7 +25,7 @@ bool solve(int index, string &word)
         return dp[index];
     }
 
-    for (int len = 1; len + index <= n; len++)
+    for (int len = 1; maxLen <= n && len + index <= n; len++)
     {
         string temp = word.substr(index, len);
 
@@ -41,10 +42,12 @@ bool wordBreak(string &word, vector<string> &dict)
 {
     n = word.size();
     memset(dp, -1, sizeof(dp));
+    maxLen = 0;
 
     for (string &word : dict)
     {
         st.insert(word);
+        maxLen = max(maxLen, (int)word.size());
     }
 
     return solve(0, word);
