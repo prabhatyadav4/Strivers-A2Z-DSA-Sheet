@@ -50,6 +50,8 @@ double BruteMyPow(double x, int n)
     return ans;
 }
 
+// 2. Recursive
+
 double solve(double x, long n)
 {
     if (n == 0)
@@ -75,13 +77,15 @@ double BetterMyPow(double x, int n)
     return solve(x, (long)n);
 }
 
+// 3. Iterative
+
 double OptimalMyPow(double x, int n)
 {
     long long N = n;
 
     if (N < 0)
     {
-        x = x / 2;
+        x = 1 / x;
         N = -N;
     }
 
