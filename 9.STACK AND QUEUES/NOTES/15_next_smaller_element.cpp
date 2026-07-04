@@ -136,4 +136,6 @@ int main()
         cout << res << " ";
     }
     cout << endl;
+
+    return 0;
 }
