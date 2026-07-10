@@ -27,6 +27,30 @@ using namespace std;
 
 int BruteLargestRectangleArea(vector<int> &heights)
 {
+    int n = heights.size();
+    int maxArea = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        int minHeight = INT_MAX;
+
+        for (int j = i; j < n; j++)
+        {
+
+            minHeight = min(minHeight, heights[j]);
+
+            int width = j - i + 1;
+            int area = minHeight * width;
+
+            maxArea = max(maxArea, area);
+        }
+    }
+
+    return maxArea;
+}
+
+int BetterLargestRectangleArea(vector<int> &heights)
+{
 
     int n = heights.size();
     vector<int> right(n);
@@ -82,9 +106,13 @@ int main()
 {
     vector<int> heights = {2, 1, 5, 6, 2, 3};
 
-    int ans = BruteLargestRectangleArea(heights);
+    int ans1 = BruteLargestRectangleArea(heights);
 
-    cout << "BRUTE: The area of the largest rectangle in the histogram: " << ans;
+    cout << "BRUTE: The area of the largest rectangle in the histogram: " << ans1;
+
+    int ans2 = BetterLargestRectangleArea(heights);
+
+    cout << "\nBETTER: The area of the largest rectangle in the histogram: " << ans2;
 
     return 0;
 }
