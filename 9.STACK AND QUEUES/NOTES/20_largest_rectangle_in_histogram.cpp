@@ -102,6 +102,36 @@ int BetterLargestRectangleArea(vector<int> &heights)
     return ans;
 }
 
+int OptimalLargestRectangleArea(vector<int> &histo)
+{
+    stack<int> st;
+    int maxA = 0;
+    int n = histo.size();
+
+    for (int i = 0; i <= n; i++)
+    {
+        while (!st.empty() && (i == n || histo[st.top()] >= histo[i]))
+        {
+            int height = histo[st.top()];
+            st.pop();
+
+            int width;
+            if (st.empty())
+            {
+                width = i;
+            }
+            else
+            {
+                width = i - st.top() - 1;
+            }
+
+            maxA = max(maxA, width * height);
+        }
+        st.push(i);
+    }
+    return maxA;
+}
+
 int main()
 {
     vector<int> heights = {2, 1, 5, 6, 2, 3};
@@ -113,6 +143,10 @@ int main()
     int ans2 = BetterLargestRectangleArea(heights);
 
     cout << "\nBETTER: The area of the largest rectangle in the histogram: " << ans2;
+
+    int ans3 = OptimalLargestRectangleArea(heights);
+
+    cout << "\nOPTIMAL: The area of the largest rectangle in the histogram: " << ans3;
 
     return 0;
 }
