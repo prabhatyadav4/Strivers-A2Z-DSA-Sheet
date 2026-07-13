@@ -73,13 +73,52 @@ int BruteCelebrity(vector<vector<int>> &mat)
     return -1;
 }
 
+int OptimalCelebrity(vector<vector<int>> &mat)
+{
+    int n = mat.size();
+
+    if (n == 0)
+    {
+        return -1;
+    }
+
+    int candidate = 0;
+
+    // Eliminate non-celebration
+    for (int i = 0; i < n; i++)
+    {
+        if (mat[candidate][i] == 1)
+        {
+            candidate = i;
+        }
+    }
+
+    // Verify the candidate
+    for (int i = 0; i < n; i++)
+    {
+        if (i == candidate)
+        {
+            continue;
+        }
+
+        if (mat[candidate][i] == 1 || mat[i][candidate] == 0)
+        {
+            return -1;
+        }
+    }
+
+    return candidate;
+}
+
 int main()
 {
     vector<vector<int>> mat = {{1, 1, 0},
                                {0, 1, 0},
                                {0, 1, 1}};
 
-    cout << BruteCelebrity(mat) << " is the celebrity";
+    cout << BruteCelebrity(mat) << " is the celebrity\n";
+
+    cout << OptimalCelebrity(mat) << " is the celebrity";
 
     return 0;
 }
