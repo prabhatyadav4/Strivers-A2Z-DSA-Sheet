@@ -109,6 +109,18 @@ public:
     {
         return topIndex == -1;
     }
+
+    // Returns the size of the stack
+
+    int size()
+    {
+        if (topIndex == -1)
+        {
+            cout << "Stack is empty";
+            return -1;
+        }
+        return topIndex + 1;
+    }
 };
 
 int main()
@@ -129,6 +141,9 @@ int main()
 
     // Checking if stack is empty
     cout << "Is stack empty: " << st.isEmpty() << endl;
+
+    // Checking the size of the stack
+    cout << "The size of stack is: " << st.size() << endl;
 
     return 0;
 }
