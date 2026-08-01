@@ -12,7 +12,7 @@ int top() gets the top element of the stack.
 int getMin() retrieves the minimum element in the stack.
 You must implement a solution with O(1) time complexity for each function.
 
- 
+
 
 Example 1:
 
@@ -32,7 +32,7 @@ minStack.getMin(); // return -3
 minStack.pop();
 minStack.top();    // return 0
 minStack.getMin(); // return -2
- 
+
 
 Constraints:
 
@@ -40,6 +40,8 @@ Constraints:
 Methods pop, top and getMin operations will always be called on non-empty stacks.
 At most 3 * 104 calls will be made to push, pop, top, and getMin.
 */
+
+// Brute Approach
 
 #include <iostream>
 #include <stack>
@@ -49,11 +51,11 @@ class Stack{
 
     private:
         stack<pair<int,int>> st;
-    
+
     public:
 
         void push(int val) {
-            
+
             if(st.empty()) {
                 st.push({val, val});
                 return;
@@ -87,6 +89,82 @@ int main() {
     st.pop();
     cout << st.top() << "\n";    // print current top
     cout << st.getMin() << "\n"; // print current minimum after pop
+
+    return 0;
+}
+
+// Optimal Approach
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+class Stack
+{
+private:
+    stack<long long int> st;
+    long long int minVal;
+
+public:
+    void push(int val)
+    {
+        if (st.empty())
+        {
+            st.push(val);
+            minVal = val;
+        }
+        else
+        {
+            if (val < minVal)
+            {
+                st.push((long long)2 * val - minVal);
+                minVal = val;
+            }
+            else
+            {
+                st.push(val);
+            }
+        }
+    }
+
+    void pop()
+    {
+        if (st.top() < minVal)
+        {
+            minVal = 2 * minVal - st.top();
+        }
+
+        st.pop();
+    }
+
+    int top()
+    {
+        if (st.top() < minVal)
+        {
+            return minVal;
+        }
+
+        return st.top();
+    }
+
+    int getMin()
+    {
+        return minVal;
+    }
+};
+
+int main()
+{
+    Stack st;
+
+    st.push(-2);
+    st.push(0);
+    st.push(-3);
+    cout << st.getMin() << " ";
+    st.pop();
+    cout << st.top() << " ";
+    st.pop();
+    cout << st.getMin();
 
     return 0;
 }
