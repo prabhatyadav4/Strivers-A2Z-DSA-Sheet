@@ -112,7 +112,9 @@ void infixToPostfix(string s)
 
         else
         {
-            while (!st.empty() && prec(c) <= prec(st.top()))
+            while (!st.empty() && st.top() != '(' &&
+                   (prec(st.top()) > prec(c) ||
+                    (prec(st.top()) == prec(c) && c != '^')))
             {
                 ans += st.top();
                 st.pop();
@@ -127,7 +129,7 @@ void infixToPostfix(string s)
         st.pop();
     }
 
-    cout << "Postfix expression: " << ans << endl;
+    cout << "Postfix Expression: " << ans << endl;
 }
 
 int main()
