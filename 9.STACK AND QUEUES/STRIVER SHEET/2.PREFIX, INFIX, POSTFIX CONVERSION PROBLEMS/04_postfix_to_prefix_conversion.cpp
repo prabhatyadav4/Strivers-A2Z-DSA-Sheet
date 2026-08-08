@@ -63,7 +63,7 @@ string postfixToPrefix(string s)
 int main()
 {
     string postfix = "ABC/-AK/L-*";
-    cout << "Postfic Expression: " << postfix << endl;
+    cout << "Postfix Expression: " << postfix << endl;
     cout << "Prefix Expression: " << postfixToPrefix(postfix) << endl;
 
     return 0;
