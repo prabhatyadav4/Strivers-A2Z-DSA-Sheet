@@ -49,7 +49,7 @@ int BruteSumSubarrayMins(vector<int> &arr)
     return sum;
 }
 
-vector<int> findNSE(vector<int> arr)
+vector<int> findNSE(vector<int> &arr)
 {
     int n = arr.size();
     vector<int> ans(n);
@@ -57,8 +57,6 @@ vector<int> findNSE(vector<int> arr)
 
     for (int i = n - 1; i >= 0; i--)
     {
-
-        int curr = arr[i];
 
         while (!st.empty() && arr[st.top()] >= arr[i])
         {
@@ -73,7 +71,7 @@ vector<int> findNSE(vector<int> arr)
     return ans;
 }
 
-vector<int> findPSE(vector<int> arr)
+vector<int> findPSE(vector<int> &arr)
 {
     int n = arr.size();
     vector<int> ans(n);
@@ -81,8 +79,6 @@ vector<int> findPSE(vector<int> arr)
 
     for (int i = 0; i < n; i++)
     {
-
-        int curr = arr[i];
 
         while (!st.empty() && arr[st.top()] > arr[i])
         {
