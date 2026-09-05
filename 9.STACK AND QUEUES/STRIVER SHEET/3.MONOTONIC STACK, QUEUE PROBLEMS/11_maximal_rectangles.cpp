@@ -35,7 +35,7 @@ int largestRectangleArea(vector<int> &heights)
     stack<int> st;
     int ans = 0;
 
-    for (int i = 0; i <= n; i++)
+    for (int i = 0; i <= n; i++) 
     {
         int currentHeight = (i == n ? 0 : heights[i]);
 
