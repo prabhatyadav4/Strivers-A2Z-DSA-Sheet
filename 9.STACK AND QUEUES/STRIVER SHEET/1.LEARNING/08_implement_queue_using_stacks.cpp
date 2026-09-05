@@ -96,6 +96,11 @@ public:
     {
         return s1.empty() && s2.empty();
     }
+
+    int size()
+    {
+        return s1.size() + s2.size();
+    }
 };
 
 int main()
@@ -115,4 +120,8 @@ int main()
     q.dequeue();
 
     cout << q.front() << endl; // 30
+
+    cout << "Size of Queue: " << q.size() << endl;
+
+    return 0;
 }
