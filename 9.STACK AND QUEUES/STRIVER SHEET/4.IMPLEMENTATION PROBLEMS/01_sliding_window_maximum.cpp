@@ -32,6 +32,7 @@ Constraints:
 
 #include <iostream>
 #include <vector>
+#include <deque>
 using namespace std;
 
 vector<int> BruteMaxSlidingWindow(vector<int> &nums, int k)
@@ -53,14 +54,51 @@ vector<int> BruteMaxSlidingWindow(vector<int> &nums, int k)
     return result;
 }
 
+vector<int> OptimalMaxSlidingWindow(vector<int> &nums, int k)
+{
+    deque<int> dq;
+    vector<int> result;
+
+    for (int i = 0; i < nums.size(); i++)
+    {
+        if (!dq.empty() && dq.front() <= i - k)
+        {
+            dq.pop_front();
+        }
+
+        while (!dq.empty() && nums[dq.back()] < nums[i])
+        {
+            dq.pop_back();
+        }
+
+        dq.push_back(i);
+
+        if (i >= k - 1)
+        {
+            result.push_back(nums[dq.front()]);
+        }
+    }
+
+    return result;
+}
+
 int main()
 {
     vector<int> arr = {4, 0, -1, 3, 5, 3, 6, 8};
     int k = 3;
 
-    vector<int> ans = BruteMaxSlidingWindow(arr, k);
+    vector<int> ans1 = BruteMaxSlidingWindow(arr, k);
 
-    for (int num : ans)
+    for (int num : ans1)
+    {
+        cout << num << " ";
+    }
+
+    cout << endl;
+    
+    vector<int> ans2 = OptimalMaxSlidingWindow(arr, k);
+
+    for (int num : ans2)
     {
         cout << num << " ";
     }
