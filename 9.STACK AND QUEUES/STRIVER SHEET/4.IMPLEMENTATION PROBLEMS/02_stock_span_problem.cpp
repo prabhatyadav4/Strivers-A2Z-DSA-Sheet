@@ -45,7 +45,7 @@ vector<int> BruteCalculateSpan(vector<int> &arr)
     return span;
 }
 
-vector<int> OptimalCalculateSpan(vector<int> &arr)
+vector<int> BetterCalculateSpan(vector<int> &arr)
 {
     int n = arr.size();
     vector<int> span(n);
@@ -74,6 +74,28 @@ vector<int> OptimalCalculateSpan(vector<int> &arr)
     return span;
 }
 
+vector<int> OptimalCalculateSpan(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> span(n);
+    stack<pair<int, int>> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        span[i] = 1;
+
+        while (!st.empty() && st.top().first <= arr[i])
+        {
+            span[i] = span[i] + st.top().second;
+            st.pop();
+        }
+
+        st.push({arr[i], span[i]});
+    }
+
+    return span;
+}
+
 int main()
 {
     vector<int> price = {100, 80, 60, 70, 60, 75, 85};
@@ -87,11 +109,20 @@ int main()
         cout << x << " ";
     }
 
-    vector<int> ans2 = OptimalCalculateSpan(price);
+    vector<int> ans2 = BetterCalculateSpan(price);
+
+    cout << "\nBETTER: The span of stock prices are: ";
+
+    for (int x : ans2)
+    {
+        cout << x << " ";
+    }
+
+    vector<int> ans3 = OptimalCalculateSpan(price);
 
     cout << "\nOPTIMAL: The span of stock prices are: ";
 
-    for (int x : ans2)
+    for (int x : ans3)
     {
         cout << x << " ";
     }
