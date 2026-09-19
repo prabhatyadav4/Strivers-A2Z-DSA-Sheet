@@ -60,6 +60,32 @@ int BruteLongestNonRepeatingSubstring(string &s)
     return maxLen;
 }
 
+int OptimalLongestNonRepeatingSubstring(string &s)
+{
+    int n = s.size();
+    vector<int> hash(256, -1);
+    int l = 0, r = 0, len = 0, maxLen = 0;
+
+    while (r < n)
+    {
+        if (hash[s[r]] != -1)
+        {
+            if (hash[s[r]] >= l)
+            {
+                l = hash[s[r]] + 1;
+            }
+        }
+
+        len = r - l + 1;
+        maxLen = max(len, maxLen);
+
+        hash[s[r]] = r;
+        r++;
+    }
+
+    return maxLen;
+}
+
 int main()
 {
     string input = "cadbzabcd";
@@ -67,6 +93,10 @@ int main()
     int length1 = BruteLongestNonRepeatingSubstring(input);
 
     cout << "BRUTE: Length of longest substring without repeating characters: " << length1 << endl;
+
+    int length2 = BruteLongestNonRepeatingSubstring(input);
+
+    cout << "\nOPTIMAL: Length of longest substring without repeating characters: " << length2 << endl;
 
     return 0;
 }
