@@ -78,6 +78,44 @@ long long BruteNumberOfSubarrays(const vector<int> &nums, int k)
     return count;
 }
 
+int BetterNumberOfSubarrays(vector<int> &nums, int k)
+{
+    int n = nums.size();
+
+    if (n == 0)
+    {
+        return 0;
+    }
+
+    int count = 0;
+
+    for (int start = 0; start < n; start++)
+    {
+        int oddCount = 0;
+
+        for (int end = start; end < n; end++)
+        {
+
+            if (nums[end] % 2 != 0)
+            {
+                oddCount++;
+            }
+
+            if (oddCount == k)
+            {
+                count++;
+            }
+
+            if (oddCount > k)
+            {
+                break;
+            }
+        }
+    }
+
+    return count;
+}
+
 int main()
 {
     vector<int> nums = {1, 1, 2, 1, 1};
@@ -85,6 +123,9 @@ int main()
 
     int ans1 = BruteNumberOfSubarrays(nums, k);
     cout << "BRUTE: Count of nice subarrays: " << ans1 << endl;
+
+    int ans2 = BetterNumberOfSubarrays(nums, k);
+    cout << "BETTER: Count of nice subarrays: " << ans2 << endl;
 
     return 0;
 }
