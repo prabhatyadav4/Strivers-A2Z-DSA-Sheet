@@ -78,7 +78,7 @@ long long BruteNumberOfSubarrays(const vector<int> &nums, int k)
     return count;
 }
 
-int BetterNumberOfSubarrays(vector<int> &nums, int k)
+long long BetterNumberOfSubarrays(vector<int> &nums, int k)
 {
     int n = nums.size();
 
@@ -87,7 +87,7 @@ int BetterNumberOfSubarrays(vector<int> &nums, int k)
         return 0;
     }
 
-    int count = 0;
+    long long count = 0;
 
     for (int start = 0; start < n; start++)
     {
@@ -116,6 +116,48 @@ int BetterNumberOfSubarrays(vector<int> &nums, int k)
     return count;
 }
 
+long long countAtMost(vector<int> &nums, int limit)
+{
+
+    if (limit < 0)
+    {
+        return 0;
+    }
+
+    int left = 0;
+    int oddCount = 0;
+    long long count = 0;
+
+    for (int right = 0; right < nums.size(); right++)
+    {
+
+        if (nums[right] % 2 != 0)
+        {
+            oddCount++;
+        }
+
+        while (oddCount > limit)
+        {
+
+            if (nums[left] % 2 != 0)
+            {
+                oddCount--;
+            }
+
+            left++;
+        }
+
+        count += right - left + 1;
+    }
+
+    return count;
+}
+
+long long OptimalNumberOfSubarrays(vector<int> &nums, int k)
+{
+    return countAtMost(nums, k) - countAtMost(nums, k - 1);
+}
+
 int main()
 {
     vector<int> nums = {1, 1, 2, 1, 1};
@@ -126,6 +168,9 @@ int main()
 
     int ans2 = BetterNumberOfSubarrays(nums, k);
     cout << "BETTER: Count of nice subarrays: " << ans2 << endl;
+
+    int ans3 = OptimalNumberOfSubarrays(nums, k);
+    cout << "OPTIMAL: Count of nice subarrays: " << ans3 << endl;
 
     return 0;
 }
