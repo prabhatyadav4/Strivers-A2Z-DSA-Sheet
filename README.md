@@ -158,9 +158,12 @@ Each solution file contains:
 | 5 | Strings | 0/X | ✅ Done |
 | 6 | Linked Lists | 0/X | ✅ Done |
 | 7 | Recursion | 0/X | ✅ Done |
-| 8 | Bit Manipulation | 0/X | ⏳ Not Started |
-| 9 | Stack & Queues | 0/X | ⏳ Not Started |
-| 10 | Sliding Window | 0/X | ⏳ Not Started |
+| 8 | Bit Manipulation | 0/X | ✅ Done |
+| 9 | Stack & Queues | 0/X | ✅ Done |
+| 10 | Sliding Window | 0/X | ✅ Done |
+
+From here, I am following Striver's new ATOZ Sheet folder structure
+
 | 11 | Heaps | 0/X | ⏳ Not Started |
 | 12 | Greedy | 0/X | ⏳ Not Started |
 | 13 | Binary Trees | 0/X | ⏳ Not Started |
