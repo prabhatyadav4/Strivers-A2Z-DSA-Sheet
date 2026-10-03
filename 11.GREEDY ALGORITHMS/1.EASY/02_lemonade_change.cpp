@@ -58,8 +58,8 @@ bool lemonadeChange(const vector<int> &bills)
         {
             if (ten && five)
             {
-                ten--;
                 five--;
+                ten--;
             }
             else if (five >= 3)
             {
