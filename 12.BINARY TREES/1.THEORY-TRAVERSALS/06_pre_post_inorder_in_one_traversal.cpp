@@ -200,7 +200,7 @@ vector<int> postorderOneStack(TreeNode *root)
     return ans;
 }
 
-vector<vector<int>> getTreeTraversal(TreeNode *root)
+vector<vector<int>> BruteGetTreeTraversal(TreeNode *root)
 {
     vector<int> in = inorderTraversal(root);
     vector<int> pre = preorderTraversal(root);
@@ -208,6 +208,59 @@ vector<vector<int>> getTreeTraversal(TreeNode *root)
     vector<int> post2 = postorderTwoStacks(root);
 
     return {in, pre, post1, post2};
+}
+
+vector<vector<int>> OptimalGetTreeTraversal(TreeNode *root)
+{
+    vector<int> pre, in, post;
+
+    if (root == nullptr)
+    {
+        return {pre, in, post};
+    }
+
+    stack<pair<TreeNode *, int>> st;
+    st.push({root, 1});
+
+    while (!st.empty())
+    {
+        auto it = st.top();
+        st.pop();
+
+        // State 1: Preorder
+        if (it.second == 1)
+        {
+            pre.push_back(it.first->val);
+            it.second = 2;
+            st.push(it);
+
+            if (it.first->left != nullptr)
+            {
+                st.push({it.first->left, 1});
+            }
+        }
+
+        // State 2: Inorder
+        else if (it.second == 2)
+        {
+            in.push_back(it.first->val);
+            it.second = 3;
+            st.push(it);
+
+            if (it.first->right != nullptr)
+            {
+                st.push({it.first->right, 1});
+            }
+        }
+
+        // State 3: Postorder
+        else
+        {
+            post.push_back(it.first->val);
+        }
+    }
+
+    return {pre, in, post};
 }
 
 int main()
@@ -220,25 +273,42 @@ int main()
     root->right->left = new TreeNode(7);
     root->right->right = new TreeNode(6);
 
-    vector<vector<int>> ans = getTreeTraversal(root);
+    vector<vector<int>> ans = BruteGetTreeTraversal(root);
 
-    cout << "Inorder: ";
+    cout << "Brute Inorder: ";
     for (int x : ans[0])
         cout << x << " ";
     cout << "\n";
 
-    cout << "Preorder: ";
+    cout << "Brute Preorder: ";
     for (int x : ans[1])
         cout << x << " ";
     cout << "\n";
 
-    cout << "Postorder (1-stack): ";
+    cout << "Brute Postorder (1-stack): ";
     for (int x : ans[2])
         cout << x << " ";
     cout << "\n";
 
-    cout << "Postorder (2-stack): ";
+    cout << "Brute Postorder (2-stack): ";
     for (int x : ans[3])
+        cout << x << " ";
+    cout << "\n";
+
+    vector<vector<int>> res = OptimalGetTreeTraversal(root);
+
+    cout << "Optimal Preorder: ";
+    for (int x : res[0])
+        cout << x << " ";
+    cout << "\n";
+
+    cout << "Optimal Inorder: ";
+    for (int x : res[1])
+        cout << x << " ";
+    cout << "\n";
+
+    cout << "Optimal Postorder: ";
+    for (int x : res[2])
         cout << x << " ";
     cout << "\n";
 
