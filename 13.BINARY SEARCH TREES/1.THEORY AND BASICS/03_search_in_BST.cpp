@@ -1,20 +1,26 @@
 /*
-Search in BST
+700. Search in a Binary Search Tree
 
-Given a Binary Search Tree and a node value key, return true if the node with value key is present in the BST; otherwise, return false.
+You are given the root of a binary search tree (BST) and an integer val.
 
-Examples:
-Input: root = [6, 2, 8, N, N, 7, 9], key = 8
-Output: true
-Explanation: 8 is present in the BST as right child of root.
+Find the node in the BST that the node's value equals val and return the subtree rooted with that node. If such a node does not exist, return null.
 
-Input: root = [16, 12, 18, 10, N, 17, 19], key = 14
-Output: false
-Explanation: 14 is not present in the BST
+ 
+
+Example 1:
+Input: root = [4,2,7,1,3], val = 2
+Output: [2,1,3]
+
+Example 2:
+Input: root = [4,2,7,1,3], val = 5
+Output: []
+ 
 
 Constraints:
-1 ≤ number of nodes ≤ 3*104
-1 ≤ node->data, key ≤ 109
+The number of nodes in the tree is in the range [1, 5000].
+1 <= Node.val <= 107
+root is a binary search tree.
+1 <= val <= 107
 */
 
 #include <iostream>
@@ -34,40 +40,32 @@ struct TreeNode
     }
 };
 
-bool searchRecursive(TreeNode *root, int key)
+TreeNode *searchRecursive(TreeNode *root, int key)
 {
     if (root == nullptr)
     {
-        return false;
+        return nullptr;
     }
 
     if (root->val == key)
     {
-        return true;
+        return root;
     }
 
     if (key < root->val)
     {
         return searchRecursive(root->left, key);
     }
-    else
-    {
-        return searchRecursive(root->right, key);
-    }
-
-    return false;
+    return searchRecursive(root->right, key);
 }
 
-bool searchIterative(TreeNode *root, int key)
+TreeNode *searchIterative(TreeNode *root, int key)
 {
-    bool present = false;
-
     while (root != nullptr)
     {
         if (root->val == key)
         {
-            present = true;
-            break;
+            return root;
         }
         else if (key < root->val)
         {
@@ -79,7 +77,7 @@ bool searchIterative(TreeNode *root, int key)
         }
     }
 
-    return present;
+    return nullptr;
 }
 
 int main()
@@ -92,10 +90,28 @@ int main()
 
     int key = 7;
 
-    cout << "Recursive search: "
-         << (searchRecursive(root, key) ? "true" : "false") << endl;
-    cout << "Iterative search: "
-         << (searchIterative(root, key) ? "true" : "false") << endl;
+    TreeNode *recursiveResult = searchRecursive(root, key);
+    TreeNode *iterativeResult = searchIterative(root, key);
+
+    cout << "Recursive search: ";
+    if (recursiveResult != nullptr)
+    {
+        cout << "found node with value " << recursiveResult->val << endl;
+    }
+    else
+    {
+        cout << "not found" << endl;
+    }
+
+    cout << "Iterative search: ";
+    if (iterativeResult != nullptr)
+    {
+        cout << "found node with value " << iterativeResult->val << endl;
+    }
+    else
+    {
+        cout << "not found" << endl;
+    }
 
     return 0;
 }

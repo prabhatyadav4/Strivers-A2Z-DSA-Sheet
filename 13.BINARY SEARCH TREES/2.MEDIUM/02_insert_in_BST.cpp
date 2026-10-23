@@ -1,23 +1,33 @@
 /*
-BST Insert
+701. Insert into a Binary Search Tree
 
-Given a root of Binary Search Tree (BST) and an integer key, insert a new node with value key into the BST.
-Return the root of the modified tree after the insertion.
+You are given the root node of a binary search tree (BST) and a value to insert into the tree. Return the root node of the BST after the insertion.
+It is guaranteed that the new value does not exist in the original BST.
 
-Note: If the key is already present in the BST, return the root.
+Notice that there may exist multiple valid ways for the insertion, as long as the tree remains a BST after insertion. You can return any of them.
 
-Examples :
-Input: root = [2, 1, 3], key = 4
-Output: [2, 1, 3, N, N, N, 4]
-Explanation: After inserting the node 4, the new tree will be [2, 1, 3, N, N, N, 4].
 
-Input: root = [2, 1, 3, N, N, N, 6], key = 4
-Output: [2, 1, 3, N, N, N, 6, 4]
-Explanation: After inserting the node 4, the new tree will be [2, 1, 3, N, N, N, 6, 4].
+
+Example 1:
+Input: root = [4,2,7,1,3], val = 5
+Output: [4,2,7,1,3,5]
+Explanation: Another accepted tree is:
+
+Example 2:
+Input: root = [40,20,60,10,30,50,70], val = 25
+Output: [40,20,60,10,30,50,70,null,null,25]
+
+Example 3:
+Input: root = [4,2,7,1,3,null,null,null,null,null,null], val = 5
+Output: [4,2,7,1,3,5]
+
 
 Constraints:
-1 ≤ size of binary tree ≤ 105
-1 ≤ node.data, key ≤ 109
+The number of nodes in the tree will be in the range [0, 104].
+-108 <= Node.val <= 108
+All the values Node.val are unique.
+-108 <= val <= 108
+It's guaranteed that val does not exist in the original BST.
 */
 
 #include <iostream>
