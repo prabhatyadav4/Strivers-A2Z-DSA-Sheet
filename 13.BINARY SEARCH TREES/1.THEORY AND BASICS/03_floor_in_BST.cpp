@@ -65,6 +65,8 @@ int floorRecursive(TreeNode *root, int x)
     return (floorValue <= x && floorValue != -1) ? floorValue : root->val;
 }
 
+// Iterative Solution- O(h) Time and O(1) Space
+
 int floorIterative(TreeNode *root, int x)
 {
     int floor = -1;
