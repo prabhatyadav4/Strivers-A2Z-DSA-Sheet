@@ -1,4 +1,4 @@
-/* 
+/*
 Remove Duplicates from Sorted Array
 
 Problem statement
@@ -9,7 +9,7 @@ You need to remove the duplicates from the array such that each element appears 
 Return the length of this new array.
 
 Note:
-Do not allocate extra space for another array. You need to do this by modifying the given input array in place with O(1) extra memory. 
+Do not allocate extra space for another array. You need to do this by modifying the given input array in place with O(1) extra memory.
 
 
 For example:
@@ -20,25 +20,58 @@ So our answer is 3.
 
 #include <iostream>
 #include <vector>
+#include <set>
 using namespace std;
 
-int removeDuplicates(vector<int> &arr, int n) {
-	// Write your code here.
-	int i = 0;
-	for(int j = 1; j < n; j++){
-		if(arr[i] != arr[j]){
-			arr[i+1] = arr[j];
-			i++;
-		}
+int BruteRemoveDuplicates(vector<int> &arr, int n)
+{
+	set<int> st;
+
+	for (int i = 0; i < n; i++)
+	{
+		st.insert(arr[i]);
 	}
-	return i+1;
+
+	int i = 0;
+
+	for (auto it : st)
+	{
+		arr[i] = it;
+		i++;
+	}
+
+	return i;
 }
 
-int main() {
-    
-    vector<int> arr = {1,1,2,2,2,3,3,4};
+int OptimalRemoveDuplicates(vector<int> &arr, int n)
+{
+	if (n == 0)
+	{
+		return 0;
+	}
 
-    cout << "The number of distinct elements in the sorted is: " << removeDuplicates(arr, arr.size());
+	int i = 0;
 
-    return 0;
+	for (int j = 1; j < n; j++)
+	{
+		if (arr[i] != arr[j])
+		{
+			i++;
+			arr[i] = arr[j];
+		}
+	}
+
+	return i + 1;
+}
+
+int main()
+{
+	vector<int> arr = {1, 1, 2, 2, 2, 3, 3, 4};
+	vector<int> optimalArr = arr;
+
+	cout << "BRUTE: The number of distinct elements in the sorted is: " << BruteRemoveDuplicates(arr, arr.size()) << endl;
+
+	cout << "OPTIMAL: The number of distinct elements in the sorted is: " << OptimalRemoveDuplicates(optimalArr, optimalArr.size()) << endl;
+
+	return 0;
 }
