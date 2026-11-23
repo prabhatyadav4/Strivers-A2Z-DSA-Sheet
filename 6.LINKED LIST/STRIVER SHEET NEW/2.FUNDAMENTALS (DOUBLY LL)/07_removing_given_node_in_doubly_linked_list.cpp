@@ -1,5 +1,4 @@
 // Problem: Delete a given node from a doubly linked list.
-// The given node is assumed not to be the tail.
 
 // Time Complexity: O(1)
 // Space Complexity: O(1)
@@ -21,7 +20,9 @@ struct Node
     }
 };
 
-void deleteGivenNode(Node *node)
+// The given node is assumed not to be the tail.
+
+void deleteGivenNode1(Node *node)
 {
     if (node == nullptr || node->next == nullptr)
     {
@@ -39,6 +40,31 @@ void deleteGivenNode(Node *node)
     }
 
     delete nextNode;
+}
+
+// The given node is assumed not to be the tail.
+
+void deleteGivenNode2(Node *node)
+{
+    if (node == nullptr)
+    {
+        return;
+    }
+
+    Node *prevNode = node->prev;
+    Node *nextNode = node->next;
+
+    if (prevNode != nullptr)
+    {
+        prevNode->next = nextNode;
+    }
+
+    if (nextNode != nullptr)
+    {
+        nextNode->prev = prevNode;
+    }
+
+    delete node;
 }
 
 int main()
@@ -60,7 +86,10 @@ int main()
     fourth->prev = third;
     fourth->next = nullptr;
 
-    deleteGivenNode(third);
+    deleteGivenNode1(third);
+
+    // third now represents the replacement node and is safe to delete.
+    deleteGivenNode2(third);
 
     Node *temp = head;
 
