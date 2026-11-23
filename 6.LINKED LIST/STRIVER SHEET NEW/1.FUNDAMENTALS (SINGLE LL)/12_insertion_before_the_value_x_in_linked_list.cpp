@@ -29,7 +29,7 @@ Node *insertBeforeX(Node *head, int value, int X)
     {
         Node *newNode = new Node(value);
         newNode->next = head;
-        return head;
+        return newNode;
     }
 
     Node *temp = head;
