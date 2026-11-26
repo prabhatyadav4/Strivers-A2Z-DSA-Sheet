@@ -44,6 +44,18 @@ Node *reverseKGroup(Node *head, int k)
         return head;
     }
 
+    Node *check = head;
+
+    for (int i = 0; i < k; i++)
+    {
+        if (check == nullptr)
+        {
+            return head;
+        }
+
+        check = check->next;
+    }
+
     Node *curr = head;
     Node *prev = nullptr;
     Node *nextNode = nullptr;
