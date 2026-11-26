@@ -54,7 +54,6 @@ Node *deleteMiddle(Node *head)
 {
     if (head == nullptr || head->next == nullptr)
     {
-        delete head;
         return nullptr;
     }
 

@@ -34,11 +34,6 @@ struct Node
 
 Node *reverseLL(Node *head)
 {
-    if (head == nullptr || head->next == nullptr)
-    {
-        return head;
-    }
-
     Node *prev = nullptr;
     Node *curr = head;
 
